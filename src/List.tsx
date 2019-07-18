@@ -155,6 +155,8 @@ class List<Value = string> extends React.Component<IProps<Value>> {
     e.preventDefault();
     this.props.beforeDrag &&
       this.props.beforeDrag({
+        clientX: isTouch ? e.touches[0].clientX : e.clientX,
+        clientY: isTouch ? e.touches[0].clientY : e.clientY,
         elements: this.getChildren(),
         index
       });
@@ -233,6 +235,9 @@ class List<Value = string> extends React.Component<IProps<Value>> {
     );
     this.autoScrolling(clientY);
     this.moveOtherItems();
+    if (this.props.onMove) {
+      this.props.onMove({ clientX, clientY });
+    }
   };
 
   moveOtherItems = () => {
@@ -382,6 +387,9 @@ class List<Value = string> extends React.Component<IProps<Value>> {
           this.props.removableByMove && isOutOfBounds ? -1 : this.afterIndex,
         targetRect: this.ghostRef.current!.getBoundingClientRect()
       });
+    }
+    if (this.props.onDragEnd) {
+      this.props.onDragEnd();
     }
     this.getChildren().forEach(item => {
       setItemTransition(item, 0);

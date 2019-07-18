@@ -17,7 +17,12 @@ export interface IItemProps {
 }
 
 export interface IProps<Value> {
-  beforeDrag?: (params: { elements: Element[]; index: number }) => void;
+  beforeDrag?: (params: {
+    clientX: number;
+    clientY: number;
+    elements: Element[];
+    index: number;
+  }) => void;
   renderItem: (params: {
     value: Value;
     props: IItemProps;
@@ -39,6 +44,11 @@ export interface IProps<Value> {
     newIndex: number;
     targetRect: ClientRect;
   }) => void;
+  onMove?: (params: {
+    clientX: number;
+    clientY: number;
+  }) => void;
+  onDragEnd?: () => void;
   transitionDuration: number;
   removableByMove: boolean;
   lockVertically: boolean;
